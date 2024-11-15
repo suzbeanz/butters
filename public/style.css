@@ -31,14 +31,18 @@ header {
     background-color: var(--primary-color);
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
     box-shadow: 0 2px 4px var(--shadow-color);
 }
 
-.logo-container .logo {
-    width: 100%;
-    max-width: 500px;
-    height: auto;
+.logo-container {
+    display: flex;
+    align-items: center;
+}
+
+.logo {
+    width: 500px;
+    height: 500px;
     transition: width 0.3s, height 0.3s;
 }
 
