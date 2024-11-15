@@ -6,18 +6,237 @@
     <link rel="stylesheet" href="style.css">
     <link rel="icon" href="Images/favicon.png" type="image/png">
     <title>It's Butters!</title>
+    <style>
+        :root {
+            --primary-color: #3581B8;
+            --background-color: #f5f5dc;
+            --text-color: #333333;
+            --header-height: 80px;
+            --font-family: 'Comic Sans MS', cursive, sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: var(--font-family);
+            background-color: var(--background-color);
+            color: var(--text-color);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        header {
+            width: 100%;
+            height: var(--header-height);
+            padding: 20px;
+            background-color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 2em;
+            color: #ffffff;
+        }
+
+        .photo-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            padding: 40px 20px;
+        }
+
+        .gallery-image {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+        }
+
+        .gallery-image:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .lightbox {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            padding-top: 60px;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.9);
+        }
+
+        .lightbox-content {
+            margin: auto;
+            display: block;
+            width: 80%;
+            max-width: 700px;
+        }
+
+        .close {
+            position: absolute;
+            top: 15px;
+            right: 35px;
+            color: #ffffff;
+            font-size: 40px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: #bbb;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .prev,
+        .next {
+            cursor: pointer;
+            position: absolute;
+            top: 50%;
+            width: auto;
+            padding: 16px;
+            margin-top: -50px;
+            color: #ffffff;
+            font-weight: bold;
+            font-size: 20px;
+            transition: 0.3s;
+            user-select: none;
+        }
+
+        .prev {
+            left: 0;
+        }
+
+        .next {
+            right: 0;
+        }
+
+        .prev:hover,
+        .next:hover {
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+
+        @media (max-width: 600px) {
+            header {
+                flex-direction: column;
+                height: auto;
+                padding: 10px;
+            }
+
+            h1 {
+                font-size: 1.5em;
+            }
+
+            .photo-gallery {
+                padding: 20px 10px;
+            }
+        }
+    </style>
 </head>
 <body>
     <header>
-        <div class="logo-container">
-            <img src="Images/butters/little-butters.png" alt="Butters Logo" class="logo">
-        </div>
+        <h1>It's Butters!</h1>
     </header>
     <main>
         <div class="photo-gallery" id="photo-gallery">
             <!-- Gallery images will be dynamically loaded here -->
         </div>
+        <div id="lightbox" class="lightbox">
+            <span class="close">&times;</span>
+            <img class="lightbox-content" id="lightbox-img">
+            <a class="prev">&#10094;</a>
+            <a class="next">&#10095;</a>
+        </div>
     </main>
-    <script src="script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log("DOMContentLoaded event triggered - Starting the script");
+
+            const galleryContainer = document.getElementById('photo-gallery');
+            const lightbox = document.getElementById('lightbox');
+            const lightboxImg = document.getElementById('lightbox-img');
+            const closeBtn = document.querySelector('.close');
+            const prevBtn = document.querySelector('.prev');
+            const nextBtn = document.querySelector('.next');
+            let currentImageIndex = 0;
+
+            const images = [
+                'butters1.jpg',
+                'butters2.png',
+                'butters3.jpeg',
+                // Add more image filenames here
+            ];
+
+            images.forEach((filename, index) => {
+                const img = document.createElement('img');
+                img.src = `Images/butters/${filename}`;
+                img.alt = 'Butters Image';
+                img.classList.add('gallery-image');
+                img.dataset.index = index;
+                galleryContainer.appendChild(img);
+            });
+
+            const showLightbox = (index) => {
+                lightbox.style.display = 'block';
+                lightboxImg.src = `Images/butters/${images[index]}`;
+                currentImageIndex = index;
+            };
+
+            const hideLightbox = () => {
+                lightbox.style.display = 'none';
+            };
+
+            const showPrevImage = () => {
+                currentImageIndex = (currentImageIndex - 1 + images.length) % images.length;
+                lightboxImg.src = `Images/butters/${images[currentImageIndex]}`;
+            };
+
+            const showNextImage = () => {
+                currentImageIndex = (currentImageIndex + 1) % images.length;
+                lightboxImg.src = `Images/butters/${images[currentImageIndex]}`;
+            };
+
+            galleryContainer.addEventListener('click', (e) => {
+                if (e.target.classList.contains('gallery-image')) {
+                    showLightbox(e.target.dataset.index);
+                }
+            });
+
+            closeBtn.addEventListener('click', hideLightbox);
+            prevBtn.addEventListener('click', showPrevImage);
+            nextBtn.addEventListener('click', showNextImage);
+
+            document.addEventListener('keydown', (e) => {
+                if (lightbox.style.display === 'block') {
+                    if (e.key === 'ArrowLeft') {
+                        showPrevImage();
+                    } else if (e.key === 'ArrowRight') {
+                        showNextImage();
+                    } else if (e.key === 'Escape') {
+                        hideLightbox();
+                    }
+                }
+            });
+
+            console.log("Images loaded successfully");
+        });
+    </script>
 </body>
 </html>
