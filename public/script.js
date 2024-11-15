@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const closeBtn = document.querySelector('.close');
     const prevBtn = document.querySelector('.prev');
     const nextBtn = document.querySelector('.next');
+    const logo = document.getElementById('logo');
     let currentImageIndex = 0;
     let images = [];
 
@@ -68,5 +69,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 hideLightbox();
             }
         }
+    });
+
+    // Adjust logo size on scroll
+    window.addEventListener('scroll', () => {
+        const scrollY = window.scrollY;
+        const newSize = Math.max(250, 500 - scrollY);
+        logo.style.width = `${newSize}px`;
+        logo.style.height = 'auto';
     });
 });
