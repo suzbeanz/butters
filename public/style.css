@@ -8,6 +8,7 @@
     --shadow-color: rgba(0, 0, 0, 0.1);
 }
 
+/* Reset and basic styles */
 * {
     box-sizing: border-box;
     margin: 0;
@@ -15,28 +16,29 @@
 }
 
 body {
+    font-family: Arial, sans-serif;
+    background-color: #fff;
+    color: #333;
     margin: 0;
     padding: 0;
-    font-family: var(--font-family);
-    background-color: var(--background-color);
-    color: var(--text-color);
     display: flex;
     flex-direction: column;
     align-items: center;
     min-height: 100vh;
 }
 
+/* Header styles */
 header {
+    background-color: #333;
+    color: #fff;
+    padding: 20px;
+    text-align: center;
     width: 100%;
     height: var(--header-height);
-    padding: 20px;
-    background-color: var(--primary-color);
     display: flex;
     align-items: center;
     justify-content: space-between;
     box-shadow: 0 2px 4px var(--shadow-color);
-    color: #fff;
-    text-align: center;
 }
 
 .logo-container {
@@ -45,39 +47,32 @@ header {
 }
 
 .logo {
-    width: 200px;
-    height: 500px;
+    max-width: 200px;
+    height: auto;
+    margin: 0 auto;
     transition: width 0.3s, height 0.3s;
     display: block;
-    margin: 0 auto 10px auto;
 }
 
-h1 {
-    margin: 0;
-    font-size: 2em;
-    color: #ffffff;
-}
-
-.section-divider {
-    width: 100%;
-    height: 5px;
-    background: var(--secondary-color);
-    margin: 20px 0;
-    clip-path: ellipse(50% 100% at 50% 0%);
-}
-
-main {
-    flex: 1;
-    width: 100%;
-    max-width: 1200px;
-    padding: 20px;
-}
-
+/* Photo gallery styles */
 .photo-gallery {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    grid-gap: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: 20px;
     padding: 40px 20px;
+}
+
+.photo-gallery img {
+    max-width: 300px;
+    width: 100%;
+    margin: 10px;
+    border-radius: 10px;
+    transition: transform 0.3s;
+}
+
+.photo-gallery img:hover {
+    transform: scale(1.05);
 }
 
 .gallery-image {
@@ -95,90 +90,74 @@ main {
     box-shadow: 0 8px 30px var(--shadow-color);
 }
 
+/* Lightbox styles */
 .lightbox {
     display: none;
     position: fixed;
     z-index: 1000;
-    padding-top: 60px;
     left: 0;
     top: 0;
     width: 100%;
     height: 100%;
-    overflow: auto;
     background-color: rgba(0, 0, 0, 0.9);
+    padding-top: 60px;
+    overflow: auto;
 }
 
 .lightbox-content {
-    margin: auto;
     display: block;
-    width: 80%;
-    max-width: 700px;
+    margin: 50px auto;
+    max-width: 90%;
+    max-height: 80%;
+}
+
+.close,
+.prev,
+.next {
+    position: absolute;
+    color: #fff;
+    font-size: 2em;
+    padding: 10px;
+    cursor: pointer;
+    user-select: none;
 }
 
 .close {
-    position: absolute;
     top: 20px;
     right: 30px;
-    color: #ffffff;
-    font-size: 2em;
-    font-weight: bold;
     transition: 0.3s;
-    padding: 10px;
-    cursor: pointer;
-    user-select: none;
-}
-
-.close:hover,
-.close:focus {
-    color: #bbb;
-    text-decoration: none;
-    cursor: pointer;
-}
-
-.prev,
-.next {
-    cursor: pointer;
-    position: absolute;
-    top: 50%;
-    width: auto;
-    padding: 16px;
-    margin-top: -50px;
-    color: #ffffff;
-    font-weight: bold;
-    font-size: 20px;
-    transition: 0.3s;
-    user-select: none;
-    font-size: 2em;
-    padding: 10px;
 }
 
 .prev {
+    top: 50%;
     left: 30px;
     transform: translateY(-50%);
 }
 
 .next {
+    top: 50%;
     right: 30px;
     transform: translateY(-50%);
 }
 
-.prev:hover,
-.next:hover {
-    background-color: rgba(0, 0, 0, 0.8);
-}
-
+/* Footer styles */
 footer {
-    width: 100%;
-    padding: 10px;
-    background-color: var(--primary-color);
+    background-color: #333;
+    color: #fff;
     text-align: center;
-    color: #ffffff;
+    padding: 10px;
+    width: 100%;
 }
 
 /* Responsive Design */
 @media (max-width: 768px) {
     .logo {
-        width: 150px;
+        max-width: 150px;
+    }
+
+    .photo-gallery img {
+        max-width: 45%;
+        margin: 5px;
     }
 
     .photo-gallery {
@@ -207,5 +186,12 @@ footer {
 
     .photo-gallery {
         padding: 20px 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .photo-gallery img {
+        max-width: 100%;
+        margin: 5px;
     }
 }
