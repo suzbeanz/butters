@@ -125,7 +125,6 @@ header {
 .close {
     top: 20px;
     right: 30px;
-    transition: 0.3s;
 }
 
 .prev {
